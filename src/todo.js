@@ -8,5 +8,23 @@ export class Todo {
         this.notes = notes;
         this.checklist = checklist;
     }
+
+    build () {
+        let container = document.createElement("div");
+       
+        for (let i of Object.keys(this)) {
+
+            if (i == "id") {
+                container.setAttribute("id", this[i]);
+                continue 
+            }
+
+            let data = document.createElement("p");
+            data.textContent = this[i]
+            data.setAttribute("class", i);
+            container.appendChild(data)
+        };
+        return container
+    }
 }
 
