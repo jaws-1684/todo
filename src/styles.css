@@ -18,24 +18,65 @@ main {
     display: flex;
 }
 
-.right-panel {
+.todos {
     width: 70vw;
     height: 100vh;
-    background-color: blue;
+    background-color: gray;
 }
 
-.left-panel {
+.menu {
     width: 30vw;
     height: 100vh;
     background-color: lightgray;
     color: gray;
 }
 
-.right-panel > * {
+.menu > * {
     display: flex;
     gap: 20px;
 }
 
 .hidden {
     display: none;
+}
+
+.project {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.todo {
+    display: flex;
+    position: relative;
+    width: 60vw;
+    gap: 20px;
+    padding: 5px;
+    border: 1px solid blue;
+}
+.mark-wrapper {
+    width: 50px;
+    height: 50px;
+    padding: 4px;
+    background: green;
+    clip-path: circle(30%);
+    border: 2px solid red;
+}
+#mark-complete {
+    position: relative;
+    left: 6px;
+    top: 6px;
+    bottom: 3px;
+    width: 30px;
+    height: 30px;
+    padding: 2px;
+    background: lightgray;
+    clip-path: circle(40%);
+    border: 2px solid red;
+}
+
+#mark-complete:hover {
+    background-color: darkgray;
+    cursor: pointer;
 }

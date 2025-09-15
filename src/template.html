@@ -11,21 +11,65 @@
     </header>
     
     <main>
-        <div class="left-panel">
-            <div class="new-project">    
-                <button id="project">Add new project</button>
+        <div class="menu">
+            <div class="container">    
+                <button id="new-project">Add new project</button>
 
-                <div class="pinput hidden">
-                    <label for="project"></label>
-                    <input type="text" name="project" placeholder="type project name here">
+                <div class="input hidden">
+                    <label for="add_project"></label>
+                    <input type="text" name="add_project" placeholder="type project name here">
                     <button id="add-project">Add</button>
+                </div>
+            </div>
+            <div class="container">
+                <div class="project-list">
                 </div>
             </div>   
         </div>
+        <div class="todos">
+            <button id="new-todo">+ New</button>
+            <form id="todo-form" class="hidden">
+                <input type="hidden" id="custId" name="custId" value="">
+                <div class="errors hidden">Errors here</div>
+                <p>
+                    <label for="title">Title:</label>
+                    <input type="text" id="title" name="title" required />
+                </p>
 
-        <div class="right-panel">
+                <p>
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description"></textarea>
+                </p>
 
-        </div>    
+                <p>
+                    <label for="dueDate">Due Date:</label>
+                    <input type="date" id="dueDate" name="duedate" />
+                </p>
+
+                <p>
+                    <label for="priority">Priority:</label>
+                    <select id="priority" name="priority">
+                      <option value="low">Low</option>
+                      <option value="normal">Normal</option>
+                      <option value="high">High</option>
+                    </select>
+                </p>
+
+                <p>
+                    <label for="notes">Notes:</label>
+                    <textarea id="notes" name="notes"></textarea>
+                </p>
+
+                <!-- <p>
+                    <label for="checklist">Checklist (comma separated):</label>
+                    <input type="text" id="checklist" name="checklist" />
+                </p> -->
+                <button id="submit-button" type="submit">Add Todo</button>
+            </form>
+
+            <div class="todos-list">
+            </div>    
+        </div>
     </main>
     
     <footer>
