@@ -6,7 +6,9 @@ export class DOM {
 		};
 
 		if (content || content.length > 0) {
-				element.textContent = content;
+				let para = document.createElement("p")
+				para.textContent = content;
+				element.append(para)
 		}	
 		return element;
 	}

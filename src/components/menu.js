@@ -1,48 +1,43 @@
 import { PubSub } from "../pubsub/pubsub.js"
-import { DOM } from "../dom.js"
+import { Template } from "./template.js"
+import logo from "../assets/logo.png"
 
 export class MenuComponent {
   constructor (projects) {
   this.projects = projects;
   this.menu = document.querySelector(".menu");
+  this.logoContainer = document.querySelector(".logo")
+  this.logoContainer.append(Template.img(logo))
+
   this.list = document.querySelector(".project-list");
   this.input = document.querySelector("input[name='add_project']");
   this.form =  document.querySelector(".input")
+  this.taskData = document.querySelector(".task-data")
   }
   render() {
     this.list.textContent = ""
     this.projects.forEach(project => {
-        this.list.appendChild(this.#template(project));
+        this.list.appendChild(Template.menu(project));
     });
   };
+
+  fillProject(project, str="") {
+    if (str.length !== 0) {
+       this.taskData.textContent = str
+       return
+     } else if(project.name){
+      this.taskData.textContent = project.name[0].toUpperCase() + project.name.slice(1, project.name.length)
+     }
+  }
+
   bind() {
     this.menu.addEventListener("click", this.#events.bind(this))
-  };
- 
-  #template(project) {
-    const item = DOM.build("div", {"class": `${project.name.split('').join('.')}`})
-
-    const container = DOM.build("div", {
-      "class": "project",
-      "id": project.id
-    }, project.name)
-
-    item.append(container)
-
-    if (project.name !== "default") {
-      const btn = DOM.build("button", { id: 'remove-project'}, "delete")
-      item.append(btn)
-    }
-
-    return item;
   };
 
   #events (event) {
     let target = event.target;
-
     if (target.classList[0] == 'project') {
-        PubSub.emit("app:update", target.id)
-        this.render()
+        PubSub.emit("app:update_project", target.id)
         return   
     };
 
@@ -60,9 +55,31 @@ export class MenuComponent {
         break;
       case 'remove-project':
         const id = target.previousElementSibling.id
-        PubSub.emit("project:destroy", id)
-        this.render()
+        let res = prompt("Are you sure? This cannot be undone? yes/no", "enter yes or no here")
+        if (res === "yes" || res === "y") {
+          PubSub.emit("app:update_project", id)
+          PubSub.emit("project:destroy", id)
+          PubSub.emit("project:last")
+          this.list.removeChild(target.parentElement)
+          break
+        } else {
+          break
+        }
+       
+      case 'important':
+        PubSub.emit("todos:show_important")
         break
+      case 'completed':
+        PubSub.emit("todos:show_completed")
+        break
+      case 'today':
+        PubSub.emit("todos:show_today")
+        break 
+      case 'upcoming':
+        PubSub.emit("todos:show_upcoming")
+        break           
+          
+        
     }
   };
 }

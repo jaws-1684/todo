@@ -1,5 +1,5 @@
 import { PubSub } from "../pubsub/pubsub.js"
-import { DOM } from "../dom.js"
+import { Template } from "./template.js"
 
 export class TodosComponent {
   constructor (todos) {
@@ -15,46 +15,39 @@ export class TodosComponent {
  
   render() {
     this.list.textContent = "";
-    this.todos.forEach((todo) => {
-      this.list.appendChild(this.#template(todo));
+    if (this.todos.length === 0) {
+      this.list.textContent = ""
+      let heading = document.createElement("h1")
+        heading.textContent = "Nothing here yet!"
+      this.list.append(heading)
+    }
+    if (this.todos.length > 0) {
+      this.list.textContent = ""
+      this.todos.forEach((todo) => {
+      this.list.appendChild(Template.todo(todo));
     });
+    }
   };
 
   bind() {
     this.container.addEventListener("click", this.#events.bind(this))
   };
 
-  #template(todo) {
-    const container = DOM.build("div", {"class": "todo"})
-      const completeContainer = DOM.build("div", {"class": "mark-wrapper"})
-      const completebtn = DOM.build("div", {"id": "mark-complete"})
-        completeContainer.append(completebtn)
-    container.append(completeContainer)
-
-    let notes;
-    for (const [key, value] of Object.entries(todo)) {
-      if (key === "id") {
-        container.setAttribute("id", value);
-        continue;
-      }
-      const data = DOM.build("p", {"class": key }, value)
-      if (key == "notes") {
-        data.setAttribute("class", "hidden") 
-      }
-      container.append(data);
-    }
-
-    const deleteBtn = DOM.build("button", {"id": "remove-todo"}, "delete")
-    const editBtn = DOM.build("button", {"id": "edit-todo"}, "edit")
-    container.append(deleteBtn, editBtn)
-
-    return container;
-  };
   #events(event) {
     let form = document.getElementById("todo-form");
     const target = event.target;
     const hiddenField =  document.getElementById("custId")
     const data = this.#buildObject(form)
+
+    if (target.classList[0] === "todo") {
+      let e = target.querySelector(".notes")
+      if ( e && e.classList[0] === "notes" && e.classList[1] === "hidden") {
+        e.classList.remove("hidden")
+      } else if (e) {
+        e.classList.add("hidden")
+      }
+      
+    }
 
     switch (target.id) {
       case "new-todo":
@@ -63,7 +56,6 @@ export class TodosComponent {
         this.submitBtn.setAttribute("id", "submit")
         form.classList.toggle("hidden");
         break;
-
       case "submit":
         event.preventDefault();
         this.#formHandler(form, data, "todo:add")        
@@ -76,21 +68,19 @@ export class TodosComponent {
       case "remove-todo":
         const id = target.parentElement.id;
         PubSub.emit("todo:remove", id)
-        this.render()
+        this.list.removeChild(target.parentElement)
         break;
       case "mark-complete":
         let todo =  target.parentElement.parentElement
         let tid = todo.id
-
-        if (!target.style.cssText) {
-          target.style.cssText = "background-color: red"
-          todo.style["color"] = "black"
+        if (!todo.classList.contains('completed')) {
           PubSub.emit("todo:toogle", tid)
+          todo.classList.add("completed")
         } else {
-          target.style.cssText = ""
-          target.parentElement.parentElement.style["color"] = ""
+          todo.classList.remove("completed")
           PubSub.emit("todo:toogle", tid)
         }
+        break
       case "edit-todo":
           form.classList.toggle("hidden");
           this.submitBtn.textContent = "Apply"
@@ -98,6 +88,7 @@ export class TodosComponent {
           const objectTodo = this.todos.find(todo => todo.id === target.parentElement.id)
           this.#populateForm(form, objectTodo)
           hiddenField.value = target.parentElement.id;
+          break
 
     }
   };
@@ -119,7 +110,6 @@ export class TodosComponent {
     let obj = {};
 
      Array.from(form.elements).forEach((element) => {
-      console.log(form.elements)
       if (element.name != "" && element.name != "custId") {
         obj[element.name]= element.value
       }
@@ -143,7 +133,7 @@ export class TodosComponent {
       
       form.reset();
       form.classList.toggle("hidden");
-      this.render()
+      PubSub.emit("todos:updated")
       this.errors.textContent = ""
       this.errors.classList.add("hidden")
     } else {
