@@ -10,7 +10,7 @@ class App {
     constructor () {
         this.last_project_id = localStorage.getItem("last_project")
 
-        if (this.last_project_id !== "") {
+        if (this.last_project_id !== null) {
             this.projects_controller = new ProjectsController(this.last_project_id);
             this.todos_controller = new TodosController(this.last_project_id);
         } else {

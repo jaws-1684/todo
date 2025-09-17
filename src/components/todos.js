@@ -8,7 +8,7 @@ export class TodosComponent {
 
     this.container = document.querySelector(".todos");
     this.list = document.querySelector(".todos-list");
-    this.errors = document.querySelector(".errors")
+    this.errors = document.querySelector(".todos .errors")
     this.submitBtn = document.getElementById("submit-button")
   };
  
@@ -66,10 +66,16 @@ export class TodosComponent {
         this.#formHandler(form, data, "todo:edit", fid)
         break
       case "remove-todo":
-        const id = target.parentElement.id;
-        PubSub.emit("todo:remove", id)
-        this.list.removeChild(target.parentElement)
-        break;
+          let res = prompt("Are you sure? This cannot be undone? yes/no", "enter yes or no here")
+
+          if (res === "yes" || res === "y") {
+            const id = target.parentElement.id;
+            PubSub.emit("todo:remove", id)
+            this.list.removeChild(target.parentElement)
+            break;
+          } else {
+            break
+          }
       case "mark-complete":
         let todo =  target.parentElement.parentElement
         let tid = todo.id

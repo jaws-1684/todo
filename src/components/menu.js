@@ -13,6 +13,7 @@ export class MenuComponent {
   this.input = document.querySelector("input[name='add_project']");
   this.form =  document.querySelector(".input")
   this.taskData = document.querySelector(".task-data")
+  this.errors = document.querySelector(".menu .errors")
   }
   render() {
     this.list.textContent = ""
@@ -48,11 +49,19 @@ export class MenuComponent {
         break;
       case 'add-project':
         const name = this.input.value
-        PubSub.emit("project:add", name)
-
-        this.render()
-        this.input.value = ""
-        this.form.classList.toggle("hidden")
+        if (name.length > 0 ) {
+          PubSub.emit("project:add", name)
+          this.render()
+          this.input.value = ""
+          this.form.classList.toggle("hidden")
+          this.classList.add("hidden")
+          break
+        } else {
+          this.errors.classList.remove("hidden")
+          this.errors.textContent = "Cannot have an project with empty name"
+          break
+        }
+      
         break;
       case 'remove-project':
         const id = target.previousElementSibling.id
