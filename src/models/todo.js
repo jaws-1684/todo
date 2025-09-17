@@ -75,6 +75,6 @@ if (localStorage.getItem('projects')) {
 }
 //creating the default Todo
 if (Todo.all.length === 0) {
-    let todo = new Todo({"title": "Todo app project", "description": "finishing the todo app", "duedate": "2030-09-16", "completed": "true", "notes": "not so easy huh?"}, 'p1', 't1')
+    let todo = new Todo({"title": "Todo app project", "description": "finishing the todo app", "duedate": "2030-09-16", "notes": "not so easy huh?"}, 'p1', 't1', true)
     todo.to_json()    
 }       
