@@ -8,6 +8,7 @@ export class DOM {
 		if (content || content.length > 0) {
 				let para = document.createElement("p")
 				para.textContent = content;
+				para.setAttribute("style", "pointer-events: none;")
 				element.append(para)
 		}	
 		return element;

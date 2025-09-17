@@ -1,7 +1,7 @@
 import { Todo } from "../models/todo.js"
 
 export class TodosController {
-	constructor (projectId='p1', id) {
+	constructor (projectId, id) {
 		this.projectId = projectId
 		this.setTodo(id);
 	};

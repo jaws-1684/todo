@@ -8,14 +8,17 @@ import { isToday, isThisWeek } from "date-fns";
 
 class App {
     constructor () {
-        this.date = new Date();
+        this.last_project_id = localStorage.getItem("last_project")
 
-        this.day = this.date.getDate();
-        this.month = this.date.getMonth() + 1;
-        this.year = this.date.getFullYear();
-
-        this.projects_controller = new ProjectsController();
-        this.todos_controller = new TodosController();
+        if (this.last_project_id !== "") {
+            this.projects_controller = new ProjectsController(this.last_project_id);
+            this.todos_controller = new TodosController(this.last_project_id);
+        } else {
+            this.projects_controller = new ProjectsController();
+            this.todos_controller = new TodosController();
+        }
+        
+       
 
         this.menu = new MenuComponent(this.projects_controller.index, this.projects_controller.show)
         this.todos = new TodosComponent(this.projects_controller.show.todos);
@@ -24,7 +27,7 @@ class App {
             this.todos.render()
 
             this.menu.bind()
-            this.todos.bind()
+            this.todos.bind()  
     };
 
     init () {   
@@ -79,6 +82,9 @@ class App {
             this.todos_controller.setTodo(id);
             this.todos_controller.destroy()
         });
+        PubSub.subscribe("save_last_project", (id) => {
+            localStorage.setItem("last_project", id)
+        })
     };
 
     #updateProject(id) {

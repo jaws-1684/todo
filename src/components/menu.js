@@ -38,6 +38,7 @@ export class MenuComponent {
     let target = event.target;
     if (target.classList[0] == 'project') {
         PubSub.emit("app:update_project", target.id)
+        PubSub.emit("save_last_project", target.id)
         return   
     };
 

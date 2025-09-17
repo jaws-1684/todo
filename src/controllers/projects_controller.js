@@ -1,7 +1,7 @@
 import { Project } from "../models/project.js"
 
 export class ProjectsController {
-	constructor (id='p1') {
+	constructor (id) {
 		this.setProject(id)
 	};
 
