@@ -54,17 +54,16 @@ export class MenuComponent {
           this.render()
           this.input.value = ""
           this.form.classList.toggle("hidden")
-          this.classList.add("hidden")
+          this.form.classList.add("hidden")
           break
         } else {
           this.errors.classList.remove("hidden")
           this.errors.textContent = "Cannot have an project with empty name"
           break
         }
-      
-        break;
       case 'remove-project':
         const id = target.previousElementSibling.id
+        localStorage.removeItem("last_project")
         let res = prompt("Are you sure? This cannot be undone? yes/no", "enter yes or no here")
         if (res === "yes" || res === "y") {
           PubSub.emit("app:update_project", id)

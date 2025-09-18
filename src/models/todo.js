@@ -65,11 +65,6 @@ export class Todo {
     };
 };
 
-Array.prototype.where = function(hash={}) {
-    const key = Object.keys(hash)[0]
-    return this.filter(item => item[key] === hash[key])
-};
-
 if (localStorage.getItem('projects')) {
     Todo.from_json()
 }

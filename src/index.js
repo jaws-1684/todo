@@ -1,4 +1,5 @@
 import "./styles.css";
+import { Extensions } from "./extensions.js"
 import { ProjectsController } from "./controllers/projects_controller.js"
 import { TodosController } from "./controllers/todos_controller.js"
 import { MenuComponent } from "./components/menu.js"
@@ -36,7 +37,7 @@ class App {
         PubSub.subscribe("project:destroy", () => this.projects_controller.destroy());
         PubSub.subscribe("app:update_project", (id) => this.#updateProject(id));
         PubSub.subscribe("project:last", () => {
-            this.#updateProject(this.projects_controller.index.last().id)})
+            this.#updateProject(this.projects_controller.index.at(-1).id)})
        
 
 

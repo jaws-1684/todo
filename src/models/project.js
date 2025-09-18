@@ -42,9 +42,6 @@ export class Project {
     };
    
 };
-Array.prototype.last = function ()  {
-        return this[this.length - 1]
-    }
 
 if (localStorage.getItem('projects')) {
     Project.from_json()
