@@ -108,7 +108,7 @@ todo/
 ---
 
 ## Contributing
-If you have some amazing improvement ideas you are welcome so feel free to contribute.
+If you have some *amazing* improvement ideas *feel free* to contribute.
 
 1. Clone this repo
 2. Create your Feature Branch (`git checkout -b feature/my_amazing_feature`)
